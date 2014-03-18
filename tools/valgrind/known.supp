@@ -1,0 +1,67 @@
+#
+# known false-positives reported by valgrind during CI builds
+#
+
+
+{
+   axtls time
+   Memcheck:Leak
+   fun:malloc
+   fun:tzload
+   fun:tzsetwall_basic
+   fun:mktime
+   fun:asn1_get_utc_time
+   fun:asn1_validity
+   fun:x509_new
+   fun:process_certificate
+   fun:do_clnt_handshake
+   fun:do_handshake
+   fun:basic_read
+   fun:ssl_read
+}
+
+{
+   axtls 509
+   Memcheck:Leak
+   fun:malloc
+   fun:tzsetwall_basic
+   fun:mktime
+   fun:asn1_get_utc_time
+   fun:asn1_validity
+   fun:x509_new
+   fun:process_certificate
+   fun:do_clnt_handshake
+   fun:do_handshake
+   fun:basic_read
+   fun:ssl_read
+   fun:do_client_connect
+}
+
+{
+   linux_glibc_getaddrinfo_unitialized_stack_allocation
+   Memcheck:Param
+   sendmsg(mmsg[0].msg_hdr)
+   fun:sendmmsg
+   fun:__libc_res_nsend
+   fun:__libc_res_nquery
+   fun:__libc_res_nsearch
+   fun:_nss_dns_gethostbyname4_r
+   fun:gaih_inet
+   fun:getaddrinfo
+   fun:Curl_getaddrinfo_ex
+   fun:getaddrinfo_thread
+   fun:curl_thread_create_thunk
+   fun:start_thread
+   fun:clone
+}
+
+{
+   httppool_curl_msg_union_result_uninit
+   Memcheck:Addr4
+   fun:httppool_io
+   fun:background
+   fun:start_thread
+   fun:clone
+}
+
+
