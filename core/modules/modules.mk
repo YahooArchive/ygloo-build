@@ -8,13 +8,13 @@ STATICLIBS += $(OBJSDIR)/libyahoo_ymagine.a
 #STATICLIBS += $(OBJSDIR)/libyahoo_flickr.a
 
 ifeq ($(BUILD_SUPPORT_EXECUTABLE),true)
-EXES += $(OBJSDIR)/bin/jpegtran
 EXES += $(OBJSDIR)/bin/test-yosal
 EXES += $(OBJSDIR)/bin/test-ymagine
 #EXES += $(OBJSDIR)/bin/test-effect
 #EXES += $(OBJSDIR)/bin/test-yperwave
 #EXES += $(OBJSDIR)/bin/test-flickr
 #EXES += $(OBJSDIR)/bin/axssl
+#EXES += $(OBJSDIR)/bin/jpegtran
 #EXES += $(SPDYLAY_EXES)
 endif
 
