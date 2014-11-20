@@ -25,14 +25,37 @@ fi
 
 echo "Generating library $OUT"
 
-echo -ne '!<arch>\n' > $OUT
-while (( "$#" )); do
-  echo "  -> $1"
-  tail -c +9 "$1" >> "$OUT"
-  shift
-done
+if [ "$AR" = "" ]; then
+  AR=ar
+fi
+if [ "$RANLIB" = "" ]; then
+  RANLIB=ranlib
+fi
+
+# Is it a GNU implementation of ar
+GNUAR=true
+
+# Use GNU ar to generate merged library
+if [ "$GNUAR" = true ]; then
+  OUTSCRIPT="${OUT}.mri"
+  echo "create ${OUT}" > "$OUTSCRIPT"
+  while (( "$#" )); do
+    echo "addlib $1" >> "$OUTSCRIPT"
+    shift
+  done
+  echo "save" >> "$OUTSCRIPT"
+  echo "end" >> "$OUTSCRIPT"
+  "$AR" -M < "$OUTSCRIPT"
+else
+  echo -ne '!<arch>\n' > $OUT
+  while (( "$#" )); do
+    echo "  -> $1"
+    tail -c +9 "$1" >> "$OUT"
+    shift
+  done
+fi
 
 if [ "$RUN_RANLIB" = "true" ]; then
-  ranlib "$OUT"
+  "$RANLIB" "$OUT"
 fi
 
