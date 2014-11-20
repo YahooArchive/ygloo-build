@@ -3,6 +3,7 @@ ifeq ($(TARGET_ARCH),)
 TARGET_ARCH:=armv7s
 endif
 TARGET_OS:=ios
+TARGET_ARCH_ABI:=$(TARGET_ARCH)
 
 OBJSDIR:= out/target/$(TARGET_OS)-$(TARGET_ARCH)
 TARGET_DIR:=$(TOPDIR)/$(OBJSDIR)
@@ -15,14 +16,38 @@ PLATFORMS_ROOT:=$(XCODE_ROOT)/Contents/Developer/Platforms
 
 ifeq ($(TARGET_ARCH),i386)
 SDK_ROOT := $(PLATFORMS_ROOT)/iPhoneSimulator.platform/Developer/SDKs
+SDK_PREFIX := $(SDK_ROOT)/iPhoneSimulator8.0.sdk
+ifeq (,$(wildcard $(SDK_PREFIX)))
+SDK_PREFIX := $(SDK_ROOT)/iPhoneSimulator7.1.sdk
+endif
+ifeq (,$(wildcard $(SDK_PREFIX)))
+SDK_PREFIX := $(SDK_ROOT)/iPhoneSimulator7.0.sdk
+endif
+ifeq (,$(wildcard $(SDK_PREFIX)))
+SDK_PREFIX := $(SDK_ROOT)/iPhoneSimulator6.1.sdk
+endif
+ifeq (,$(wildcard $(SDK_PREFIX)))
 SDK_PREFIX := $(SDK_ROOT)/iPhoneSimulator6.0.sdk
+endif
 
 TARGET_CFLAGS += -arch i386
 TARGET_CFLAGS += -mios-simulator-version-min=5.0
 
 else ifeq ($(TARGET_ARCH),x86_64)
 SDK_ROOT := $(PLATFORMS_ROOT)/iPhoneSimulator.platform/Developer/SDKs
+SDK_PREFIX := $(SDK_ROOT)/iPhoneSimulator8.0.sdk
+ifeq (,$(wildcard $(SDK_PREFIX)))
+SDK_PREFIX := $(SDK_ROOT)/iPhoneSimulator7.1.sdk
+endif
+ifeq (,$(wildcard $(SDK_PREFIX)))
+SDK_PREFIX := $(SDK_ROOT)/iPhoneSimulator7.0.sdk
+endif
+ifeq (,$(wildcard $(SDK_PREFIX)))
+SDK_PREFIX := $(SDK_ROOT)/iPhoneSimulator6.1.sdk
+endif
+ifeq (,$(wildcard $(SDK_PREFIX)))
 SDK_PREFIX := $(SDK_ROOT)/iPhoneSimulator6.0.sdk
+endif
 
 TARGET_CFLAGS += -arch x86_64
 TARGET_CFLAGS += -mios-simulator-version-min=6.0
@@ -30,32 +55,46 @@ TARGET_CFLAGS += -mios-simulator-version-min=6.0
 else
 SDK_ROOT := $(PLATFORMS_ROOT)/iPhoneOS.platform/Developer/SDKs
 
+SDK_PREFIX := $(SDK_ROOT)/iPhoneOS8.0.sdk
+ifeq (,$(wildcard $(SDK_PREFIX)))
+SDK_PREFIX := $(SDK_ROOT)/iPhoneOS7.1.sdk
+endif
+ifeq (,$(wildcard $(SDK_PREFIX)))
 SDK_PREFIX := $(SDK_ROOT)/iPhoneOS7.0.sdk
+endif
 ifeq (,$(wildcard $(SDK_PREFIX)))
 SDK_PREFIX := $(SDK_ROOT)/iPhoneOS6.1.sdk
+endif
+ifeq (,$(wildcard $(SDK_PREFIX)))
+SDK_PREFIX := $(SDK_ROOT)/iPhoneOS6.0.sdk
 endif
 
 endif
 
 ifeq ($(TARGET_ARCH),arm64)
 # armv7a
+TARGET_ARCH_ABI:=arm64
 TARGET_CFLAGS += -arch arm64
 TARGET_CFLAGS += -miphoneos-version-min=7.0
 endif
 ifeq ($(TARGET_ARCH),armv7s)
 # armv7a
+TARGET_ARCH_ABI:=armeabi-v7a
 TARGET_CFLAGS += -arch armv7s
 TARGET_CFLAGS += -miphoneos-version-min=5.0
 endif
 ifeq ($(TARGET_ARCH),armv7)
+TARGET_ARCH_ABI:=armeabi-v7a
 TARGET_CFLAGS += -arch armv7
 TARGET_CFLAGS += -miphoneos-version-min=5.0
 endif
 ifeq ($(TARGET_ARCH),armv6)
+TARGET_ARCH_ABI:=armeabi
 TARGET_CFLAGS += -arch armv6
 TARGET_CFLAGS += -miphoneos-version-min=5.0
 endif
 ifeq ($(TARGET_ARCH),i386)
+TARGET_ARCH_ABI:=x86
 TARGET_CFLAGS += -arch i386
 TARGET_CFLAGS += -mios-simulator-version-min=5.0
 endif

@@ -21,6 +21,9 @@ INTERNAL_MODIFIER_TARGETS := showcommands native android ios debug release ccach
 # Default rule (if calling "make" with no argument)
 default: all
 
+# We use the GNU Make Standard Library
+include $(BUILD_SYSTEM)/gmsl/gmsl
+
 include $(BUILD_SYSTEM)/extensions.mk
 include $(BUILD_SYSTEM)/envsetup.mk
 
@@ -40,6 +43,7 @@ endif
 # The 'clang' goal says to use clang
 USE_CLANG:=$(filter clang,$(MAKECMDGOALS))
 USE_CLANG_SANITIZE_ADDRESS:=$(filter clang-sanitize-address,$(MAKECMDGOALS))
+USE_GCC:=$(filter gcc,$(MAKECMDGOALS))
 
 # The 'showcommands' goal says to show the full command
 # lines being executed, instead of a short message about
@@ -72,6 +76,17 @@ BUILD_IOS:=false
 
 BUILD_SUPPORT_EXECUTABLE:=false
 BUILD_SUPPORT_SHARED:=false
+
+ifeq ($(USE_CLANG),)
+ifeq ($(USE_GCC),)
+# No explicit compiler specified
+ifneq ($(BUILD_TARGET_NATIVE),)
+ifneq (,$(wildcard /usr/bin/clang))
+USE_CLANG:=clang
+endif
+endif
+endif
+endif
 
 ifneq ($(BUILD_TARGET_NATIVE),)
 BUILD_HOST:=true
@@ -134,6 +149,7 @@ list:
 all: $(EXES) $(SOLIBS) $(STATICLIBS)
 
 combo: $(COMBOLIBS)
+combo-ymagine: $(COMBODIR)/libyahoo_ymagine.a
 
 targetlib: $(MAINLIB)
 
@@ -159,6 +175,10 @@ clang:
 
 .PHONY: clang-sanitize-address
 clang-sanitize-address:
+	@echo >/dev/null
+
+.PHONY: gcc
+gcc:
 	@echo >/dev/null
 
 .PHONY: ccache

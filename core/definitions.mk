@@ -951,6 +951,53 @@ $(transform-d-to-p)
 endef
 
 ###########################################################
+## Commands for running nasm to compile a .asm file
+###########################################################
+# nasm -fmacho64 -DMACHO -D__x86_64__ -I../../simd -I. ../../simd/jfsseflt-64.asm  -fno-common -DPIC -o .libs/jfsseflt-64.o
+
+# $(1): extra flags
+define transform-asm-to-o-no-deps
+@echo "target $(PRIVATE_ARM_MODE) NASM: $(PRIVATE_MODULE) <= $<"
+@mkdir -p $(dir $@)
+$(hide) $(PRIVATE_NASM) \
+	$(addprefix -I, $(addsufix /,$(PRIVATE_C_INCLUDES))) \
+	$(shell cat $(PRIVATE_IMPORT_INCLUDES)) \
+	$(PRIVATE_NASMFLAGS) \
+	$(1) \
+	$< \
+	$(PRIVATE_DEBUG_CFLAGS) \
+	$(PRIVATE_DEPEND_CFLAGS) $(patsubst %.o,%.d,$@) -o $@
+endef
+
+define transform-asm-to-o
+$(transform-asm-to-o-no-deps)
+$(transform-d-to-p)
+endef
+
+###########################################################
+## Commands for running NVCC to compile a .cu CUDA file
+###########################################################
+
+# $(1): extra flags
+define transform-cu-to-o-no-deps
+@echo "target $(PRIVATE_ARM_MODE) CUDA: $(PRIVATE_MODULE) <= $<"
+@mkdir -p $(dir $@)
+$(hide) $(PRIVATE_NVCC) \
+	$(addprefix -I, $(addsufix /,$(PRIVATE_C_INCLUDES))) \
+	$(shell cat $(PRIVATE_IMPORT_INCLUDES)) \
+	$(PRIVATE_NVCCFLAGS) \
+	$(1) \
+	$< \
+	$(PRIVATE_DEBUG_CFLAGS) \
+	-c -o $@
+endef
+
+define transform-cu-to-o
+$(transform-cu-to-o-no-deps)
+$(transform-d-to-p)
+endef
+
+###########################################################
 ## Commands for running gcc to compile an Objective-C file
 ## This should never happen for target builds but this
 ## will error at build time.
@@ -1111,7 +1158,7 @@ define transform-a-to-static-lib
 @mkdir -p $(dir $@)
 @rm -f $@
 @echo "target StaticMergeLib: $(PRIVATE_MODULE) ($@)"
-$(call split-long-arguments,$(TARGET_LIBTOOL) $(TARGET_GLOBAL_LIBTOOLFLAGS) $(PRIVATE_LIBTOOLFLAGS) -static -o $@,$(filter %.a, $^))
+$(call split-long-arguments,AR=$(TARGET_AR) RANLIB=$(TARGET_RANLIB) $(TARGET_LIBTOOL) $(TARGET_GLOBAL_LIBTOOLFLAGS) $(PRIVATE_LIBTOOLFLAGS) -static -o $@,$(filter %.a, $^))
 $(TARGET_RANLIB) $@
 endef
 

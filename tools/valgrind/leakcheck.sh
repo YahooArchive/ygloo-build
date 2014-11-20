@@ -89,14 +89,14 @@ runTest "$prefix/test-yperwave demoparallel"
 runTest "$prefix/test-yperwave demoget https://www.yahoo.com/"
 #runTest "$prefix/test-yperwave demooauth"
 
-runTest "$prefix/test-ymagine decode -- framework/ymagine/tests/data/theme/grill.jpg"
-runTest "$prefix/test-ymagine decode -shaderName color-bleached -- framework/ymagine/tests/data/theme/grill.jpg"
-runTest "$prefix/test-ymagine effect -width 640 -height 480 'color-sepia;' framework/ymagine/tests/data/theme/grill.jpg /dev/null"
-runTest "$prefix/test-ymagine effect -width 640 -height 480 'vignette-blowout_standard;' framework/ymagine/tests/data/theme/grill.jpg /dev/null"
-runTest "$prefix/test-ymagine convert -width 640 -height 480 framework/ymagine/tests/data/testnv21.yuv /dev/null"
-runTest "$prefix/test-ymagine transcode -force -width 320 -height 240 -- framework/ymagine/tests/data/theme/buffet.jpg /dev/null"
-runTest "$prefix/test-ymagine blur -width 640 -height 480 framework/ymagine/tests/data/theme/buffet.jpg /dev/null"
-runTest "$prefix/test-ymagine sobel -width 640 -height 480 framework/ymagine/tests/data/theme/coffee.jpg /dev/null"
+runTest "$prefix/ymagine decode -- framework/ymagine/tests/data/theme/grill.jpg"
+runTest "$prefix/ymagine decode -shaderName color-bleached -- framework/ymagine/tests/data/theme/grill.jpg"
+runTest "$prefix/ymagine effect -width 640 -height 480 'color-sepia;' framework/ymagine/tests/data/theme/grill.jpg /dev/null"
+runTest "$prefix/ymagine effect -width 640 -height 480 'vignette-blowout_standard;' framework/ymagine/tests/data/theme/grill.jpg /dev/null"
+runTest "$prefix/ymagine convert -width 640 -height 480 framework/ymagine/tests/data/testnv21.yuv /dev/null"
+runTest "$prefix/ymagine transcode -force -width 320 -height 240 -- framework/ymagine/tests/data/theme/buffet.jpg /dev/null"
+runTest "$prefix/ymagine blur -width 640 -height 480 framework/ymagine/tests/data/theme/buffet.jpg /dev/null"
+runTest "$prefix/ymagine sobel -width 640 -height 480 framework/ymagine/tests/data/theme/coffee.jpg /dev/null"
 
 
 if [ ! -z "$NODEJS" ]; then

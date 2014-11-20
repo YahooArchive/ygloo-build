@@ -28,8 +28,13 @@ CURL_ROOT:=$(YCONFIG_EXTERNAL)/curl
 JANSSON_ROOT:=$(YCONFIG_EXTERNAL)/jansson
 JPEGTURBO_ROOT:=$(YCONFIG_EXTERNAL)/jpeg-turbo
 WEBP_ROOT:=$(YCONFIG_EXTERNAL)/webp
+PNG_ROOT:=$(YCONFIG_EXTERNAL)/libpng
 CCV_ROOT:=$(YCONFIG_EXTERNAL)/ccv
+OPENCV_ROOT:=$(YCONFIG_EXTERNAL)/opencv
 EXPAT_ROOT:=$(YCONFIG_EXTERNAL)/expat
+VPX_ROOT:=$(YCONFIG_EXTERNAL)/libvpx
+WEBM_ROOT:=$(YCONFIG_EXTERNAL)/webm
+WEBMTOOLS_ROOT:=$(YCONFIG_EXTERNAL)/webm-tools
 
 # Core modules
 YOSAL_ROOT:=$(YCONFIG_FRAMEWORK)/yosal
@@ -52,9 +57,12 @@ CURL_STATIC_LIBRARIES += libyahoo_zlib
 
 YMAGINE_STATIC_LIBRARIES := libyahoo_ymagine_main
 YMAGINE_STATIC_LIBRARIES += libyahoo_jpegturbo
+YMAGINE_STATIC_LIBRARIES += libyahoo_png
 YMAGINE_STATIC_LIBRARIES += libyahoo_webpdec
+YMAGINE_STATIC_LIBRARIES += libyahoo_webpenc
 YMAGINE_STATIC_LIBRARIES += libyahoo_expat
 YMAGINE_STATIC_LIBRARIES += libyahoo_yosal
+YMAGINE_STATIC_LIBRARIES += libyahoo_zlib
 
 YPERWAVE_STATIC_LIBRARIES := libyahoo_yperwave_main
 ifeq ($(YPERWAVE_OPTION_SPDY),true)
@@ -69,3 +77,19 @@ SPDYLAY_EXES :=
 ifeq ($(YPERWAVE_OPTION_SPDY),true)
 SPDYLAY_EXES := $(OBJSDIR)/bin/spdycli
 endif
+
+CCV_CUDA:=false
+ifneq (,$(TARGET_NVDIR))
+ifneq (,$(wildcard $(TARGET_NVDIR)))
+# CCV_CUDA:=true
+endif
+endif
+ifeq ($(CCV_CUDA),true)
+CCV_LDLIBS := -Wl,-rpath,/usr/local/cuda/lib -L/usr/local/cuda/lib
+CCV_LDLIBS += -lcuda -lcudart -lcublas
+endif
+
+ifeq ($(TARGET_OS),darwin)
+CCV_LDLIBS += -framework Accelerate
+endif
+
