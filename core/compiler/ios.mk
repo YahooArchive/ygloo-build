@@ -16,7 +16,16 @@ PLATFORMS_ROOT:=$(XCODE_ROOT)/Contents/Developer/Platforms
 
 ifeq ($(TARGET_ARCH),i386)
 SDK_ROOT := $(PLATFORMS_ROOT)/iPhoneSimulator.platform/Developer/SDKs
+SDK_PREFIX := $(SDK_ROOT)/iPhoneSimulator.sdk
+ifeq (,$(wildcard $(SDK_PREFIX)))
+SDK_PREFIX := $(SDK_ROOT)/iPhoneSimulator9.0.sdk
+endif
+ifeq (,$(wildcard $(SDK_PREFIX)))
+SDK_PREFIX := $(SDK_ROOT)/iPhoneSimulator8.1.sdk
+endif
+ifeq (,$(wildcard $(SDK_PREFIX)))
 SDK_PREFIX := $(SDK_ROOT)/iPhoneSimulator8.0.sdk
+endif
 ifeq (,$(wildcard $(SDK_PREFIX)))
 SDK_PREFIX := $(SDK_ROOT)/iPhoneSimulator7.1.sdk
 endif
@@ -35,7 +44,16 @@ TARGET_CFLAGS += -mios-simulator-version-min=5.0
 
 else ifeq ($(TARGET_ARCH),x86_64)
 SDK_ROOT := $(PLATFORMS_ROOT)/iPhoneSimulator.platform/Developer/SDKs
+SDK_PREFIX := $(SDK_ROOT)/iPhoneSimulator.sdk
+ifeq (,$(wildcard $(SDK_PREFIX)))
+SDK_PREFIX := $(SDK_ROOT)/iPhoneSimulator9.0.sdk
+endif
+ifeq (,$(wildcard $(SDK_PREFIX)))
+SDK_PREFIX := $(SDK_ROOT)/iPhoneSimulator8.1.sdk
+endif
+ifeq (,$(wildcard $(SDK_PREFIX)))
 SDK_PREFIX := $(SDK_ROOT)/iPhoneSimulator8.0.sdk
+endif
 ifeq (,$(wildcard $(SDK_PREFIX)))
 SDK_PREFIX := $(SDK_ROOT)/iPhoneSimulator7.1.sdk
 endif
@@ -55,7 +73,16 @@ TARGET_CFLAGS += -mios-simulator-version-min=6.0
 else
 SDK_ROOT := $(PLATFORMS_ROOT)/iPhoneOS.platform/Developer/SDKs
 
+SDK_PREFIX := $(SDK_ROOT)/iPhoneOS.sdk
+ifeq (,$(wildcard $(SDK_PREFIX)))
+SDK_PREFIX := $(SDK_ROOT)/iPhoneOS9.0.sdk
+endif
+ifeq (,$(wildcard $(SDK_PREFIX)))
+SDK_PREFIX := $(SDK_ROOT)/iPhoneOS8.1.sdk
+endif
+ifeq (,$(wildcard $(SDK_PREFIX)))
 SDK_PREFIX := $(SDK_ROOT)/iPhoneOS8.0.sdk
+endif
 ifeq (,$(wildcard $(SDK_PREFIX)))
 SDK_PREFIX := $(SDK_ROOT)/iPhoneOS7.1.sdk
 endif
