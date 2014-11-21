@@ -24,29 +24,28 @@ VSTREAM_STATICLIBS:=
 VSTREAM_SOLIBS:=
 
 YMAGINE_STATICLIBS += $(OBJSDIR)/libyahoo_ymagine.a
-
 OPENCV_STATICLIBS += $(OBJSDIR)/libyahoo_opencv.a
-
 VSTREAM_STATICLIBS += $(OBJSDIR)/libyahoo_srtp.a
+
 ifeq ($(BUILD_SUPPORT_EXECUTABLE),true)
 VSTREAM_EXES += $(OBJSDIR)/bin/rtpw
 endif
 
 STATICLIBS += $(OBJSDIR)/libyahoo_yosal.a
 STATICLIBS += $(OBJSDIR)/libyahoo_ymagine.a
+ifeq ($(BUILD_SUPPORT_INTERNAL),true)
 STATICLIBS += $(OBJSDIR)/libyahoo_yperwave.a
 STATICLIBS += $(OBJSDIR)/libyahoo_flickr.a
+endif
 
 ifeq ($(BUILD_SUPPORT_EXECUTABLE),true)
 YMAGINE_EXES += $(OBJSDIR)/bin/ymagine
 YMAGINE_EXES += $(OBJSDIR)/bin/test-ymagine-unit
 
 # VISION_EXES += $(OBJSDIR)/bin/cnnclassify
-VISION_EXES += $(OBJSDIR)/bin/image-net
-
-# VISION_EXES += $(OBJSDIR)/bin/cnnclassify
 VIDEO_EXES += $(OBJSDIR)/bin/image-net
 
+ifeq ($(BUILD_SUPPORT_INTERNAL),true)
 EXES += $(OBJSDIR)/bin/test-yosal
 EXES += $(OBJSDIR)/bin/test-effect
 EXES += $(OBJSDIR)/bin/test-yperwave
@@ -54,6 +53,7 @@ EXES += $(OBJSDIR)/bin/test-flickr
 EXES += $(OBJSDIR)/bin/axssl
 EXES += $(OBJSDIR)/bin/jpegtran
 EXES += $(SPDYLAY_EXES)
+endif
 endif
 
 ifeq ($(BUILD_ANDROID),true)
@@ -71,9 +71,11 @@ EXES += $(YMAGINE_EXES)
 STATICLIBS += $(YMAGINE_STATICLIBS)
 SOLIBS += $(YMAGINE_SOLIBS)
 
+ifeq ($(BUILD_SUPPORT_INTERNAL),true)
 EXES += $(VISION_EXES)
 STATICLIBS += $(VISION_STATICLIBS)
 SOLIBS += $(VISION_SOLIBS)
+endif
 
 # Aliases
 module-yosal: $(OBJSDIR)/bin/test-yosal
