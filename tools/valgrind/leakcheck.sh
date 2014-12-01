@@ -80,14 +80,14 @@ runTest() {
 
 runTest "$prefix/test-yosal"
 
-runTest "$prefix/test-yperwave runtests"
-runTest "$prefix/test-yperwave jsonasync"
-runTest "$prefix/test-yperwave downloadasync"
-runTest "$prefix/test-yperwave demorestart"
-runTest "$prefix/test-yperwave demoserial"
-runTest "$prefix/test-yperwave demoparallel"
-runTest "$prefix/test-yperwave demoget https://www.yahoo.com/"
-#runTest "$prefix/test-yperwave demooauth"
+runTest "$prefix/yperwave runtests"
+runTest "$prefix/yperwave jsonasync"
+runTest "$prefix/yperwave downloadasync"
+runTest "$prefix/yperwave demorestart"
+runTest "$prefix/yperwave demoserial"
+runTest "$prefix/yperwave demoparallel"
+runTest "$prefix/yperwave demoget https://www.yahoo.com/"
+#runTest "$prefix/yperwave demooauth"
 
 runTest "$prefix/ymagine decode -- framework/ymagine/tests/data/theme/grill.jpg"
 runTest "$prefix/ymagine decode -shaderName color-bleached -- framework/ymagine/tests/data/theme/grill.jpg"
@@ -102,11 +102,11 @@ runTest "$prefix/ymagine sobel -width 640 -height 480 framework/ymagine/tests/da
 if [ ! -z "$NODEJS" ]; then
   $NODEJS "${topdir}/build/tools/mockserver/mockserver.js" &
   NODEPID=$!
-  runTest "$prefix/test-yperwave demosleepwake"
-  runTest "$prefix/test-yperwave democancel"
-  runTest "$prefix/test-yperwave demotimeout"
-  runTest "$prefix/test-yperwave downloadcache"
-  runTest "$prefix/test-yperwave diskcache"
+  runTest "$prefix/yperwave demosleepwake"
+  runTest "$prefix/yperwave democancel"
+  runTest "$prefix/yperwave demotimeout"
+  runTest "$prefix/yperwave downloadcache"
+  runTest "$prefix/yperwave diskcache"
   kill $NODEPID
 fi
 

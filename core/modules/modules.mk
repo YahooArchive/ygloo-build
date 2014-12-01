@@ -46,9 +46,9 @@ YMAGINE_EXES += $(OBJSDIR)/bin/test-ymagine-unit
 VIDEO_EXES += $(OBJSDIR)/bin/image-net
 
 ifeq ($(BUILD_SUPPORT_INTERNAL),true)
+EXES += $(OBJSDIR)/bin/yperwave
 EXES += $(OBJSDIR)/bin/test-yosal
 EXES += $(OBJSDIR)/bin/test-effect
-EXES += $(OBJSDIR)/bin/test-yperwave
 EXES += $(OBJSDIR)/bin/test-flickr
 EXES += $(OBJSDIR)/bin/axssl
 EXES += $(OBJSDIR)/bin/jpegtran
@@ -79,7 +79,7 @@ endif
 
 # Aliases
 module-yosal: $(OBJSDIR)/bin/test-yosal
-module-yperwave: $(OBJSDIR)/bin/test-yperwave
+module-yperwave: $(OBJSDIR)/bin/yperwave
 module-ymagine: $(YMAGINE_EXES) $(YMAGINE_SOLIBS) $(YMAGINE_STATICLIBS)
 module-ymaginexs: $(YMAGINEXS_SOLIBS)
 module-vision: $(VISION_EXES) $(VISION_SOLIBS) $(VISION_STATICLIBS)
